@@ -4,10 +4,11 @@ import React from "react";
 import BlogCard from "../_components/BlogCard";
 import { unstable_noStore as noStore } from "next/cache";
 import { api } from "~/trpc/server";
-import TestInput from "../_components/TestInput";
+
 const page = async () => {
   noStore();
   //   const hello = await api.post.hello.query({ text: "testing" });
+  const res = await api.blog.getBlogs.query();
 
   return (
     <>
@@ -28,21 +29,24 @@ const page = async () => {
         />
       </div>
       <section className="rounded-xl bg-gray-100 bg-contain py-5 md:py-10">
-        <div className="w-full max-w-7xl p-5 md:px-10 lg:mx-auto xl:px-0">
-          <div className="mb-4 flex w-full flex-row items-center justify-between rounded-xl bg-blue-50">
+        <div className="w-full max-w-7xl p-5 md:px-10 lg:mx-auto xl:px-4">
+          <div className="flex w-full flex-row items-center justify-between rounded-xl ">
             <h1 className="text-xl md:text-xl lg:text-2xl">Posts</h1>
             <Link href="/addBlog">
               <button
                 type="button"
-                className="rounded-xl bg-blue-500 p-1 text-white"
+                className="rounded-xl bg-blue-500 p-1 text-sm text-white hover:bg-white hover:text-blue-500"
               >
-                Create Blog
+                Create post
               </button>
             </Link>
           </div>
 
-          <div id="post">
-            <BlogCard />
+          <div
+            id="post"
+            className="grid w-full grid-cols-1 gap-8 pt-14 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+          >
+            <BlogCard posts={res} />
           </div>
         </div>
       </section>

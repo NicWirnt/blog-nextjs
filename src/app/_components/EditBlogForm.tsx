@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { HiArrowLeft } from "react-icons/hi";
+import { api } from "~/trpc/react";
+import { trpc } from "../_trpc/client";
 
 interface EditBlogFormInterface {
   id: string;
@@ -19,24 +21,28 @@ const EditBlogForm = ({ id, title, description }: EditBlogFormInterface) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
-      const res = await fetch(`http://localhost:8080/api/blogs/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-type": "application/json",
+      const res = await updatePost.mutate({
+        input: {
+          id: id,
+          newTitle: newTitle,
+          newDescription: newDescription,
         },
-        body: JSON.stringify({ newTitle, newDescription }),
       });
-      if (!res.ok) {
-        new Error("Failed to update Blog");
+      if (updatePost.status === "success") {
+        router.refresh();
+        router.push("/");
+      } else {
+        alert("Failed to update post");
+        router.refresh();
       }
-      router.refresh();
-      router.push("/");
     } catch (error) {
       console.log(error);
     }
   };
+
+  const updatePost = trpc.blog.updatePost.useMutation();
+
   return (
     <>
       <div className="m-10">

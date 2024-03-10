@@ -4,6 +4,7 @@ import React from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 
 import { useRouter } from "next/navigation";
+import { trpc } from "../_trpc/client";
 
 const RemoveBtn = ({ id, userId }: any) => {
   const router = useRouter();
@@ -11,15 +12,18 @@ const RemoveBtn = ({ id, userId }: any) => {
   const removeBlog = async () => {
     const confirmed = confirm("Are you sure to delete this blog?");
     if (confirmed) {
-      const res = await fetch(`http://localhost:3000/api/blogs?id=${id}`, {
-        method: "DELETE",
+      const res = await deletePost.mutate({
+        input: {
+          _id: id,
+        },
       });
-
-      if (res.ok) {
+      if (deletePost.status === "success") {
         router.refresh();
       }
     }
   };
+
+  const deletePost = trpc.blog.deletePost.useMutation();
 
   return (
     <>

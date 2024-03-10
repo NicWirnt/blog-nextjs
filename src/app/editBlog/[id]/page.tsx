@@ -3,36 +3,36 @@ import Link from "next/link";
 import React from "react";
 import { BiLeftArrow } from "react-icons/bi";
 import EditBlogForm from "~/app/_components/EditBlogForm";
+import { api } from "~/trpc/server";
 
-const getBlogById = async (id: string) => {
+// const getBlogById = async (id: string) => {
+//   try {
+//     const res = await fetch(`http://localhost:3000/api/blogs/${id}`, {
+//       cache: "no-store",
+//     });
+//     if (!res.ok) {
+//       new Error("Failed to fetch BLogs");
+//     }
+//     return res.json();
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+const fetchPost = async (id: string) => {
   try {
-    const res = await fetch(`http://localhost:3000/api/blogs/${id}`, {
-      cache: "no-store",
-    });
-    if (!res.ok) {
-      new Error("Failed to fetch BLogs");
-    }
-    return res.json();
-  } catch (error) {
-    console.log(error);
-  }
-};
+    const getPostById = await api.blog.getBlogById.query({ id });
 
-const gettrpc = async () => {
-  try {
-    const res = await fetch("http://localhost:3000/api/trpc");
-    console.log(res);
+    return getPostById;
   } catch (error) {
     console.log(error);
   }
 };
 
 const page = async ({ params }: any) => {
-  const trpc = await gettrpc();
-
   const { id } = params;
-  const { blog } = await getBlogById(id);
+  const blog = await fetchPost(id);
   const { userId }: { userId: string | null } = auth();
+
   if (userId !== blog.userId) {
     return (
       <div className="mx-auto mt-8 max-w-md rounded-lg bg-white p-8 shadow-lg">

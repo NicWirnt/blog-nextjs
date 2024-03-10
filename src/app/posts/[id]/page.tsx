@@ -1,15 +1,12 @@
 import React from "react";
 import BlogDetail from "~/app/_components/BlogDetail";
+import { api } from "~/trpc/server";
 
-const getBlogById = async (id: string) => {
+const fetchPost = async (id: string) => {
   try {
-    const res = await fetch(`http://localhost:3000/api/blogs/${id}`, {
-      cache: "no-store",
-    });
-    if (!res.ok) {
-      new Error("Failed to fetch BLogs");
-    }
-    return res.json();
+    const getPostById = await api.blog.getBlogById.query({ id });
+
+    return getPostById;
   } catch (error) {
     console.log(error);
   }
@@ -17,7 +14,7 @@ const getBlogById = async (id: string) => {
 
 const page = async ({ params }: any) => {
   const { id } = params;
-  const { blog } = await getBlogById(id);
+  const blog = await fetchPost(id);
 
   return (
     <div>
