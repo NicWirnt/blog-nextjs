@@ -18,10 +18,10 @@ interface iBlog {
 }
 
 interface BlogCardProps {
-  posts: iBlog[];
+  posts: iBlog[] | void;
 }
 
-const BlogCard: React.FC<BlogCardProps> = async ({ posts }) => {
+const BlogCard = async ({ posts }: any) => {
   const { userId }: { userId: string | null } = auth();
 
   // const { result: blogs } = await getBlogs();

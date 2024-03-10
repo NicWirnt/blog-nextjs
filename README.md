@@ -29,6 +29,8 @@ Database used is MongoDB connected using tRPC api request.
 
 Meanwhile most of the T3 stack use Drizzle for the database management, i'm using MongoDB as im more familiar with it. Please check the .env.example files to include into your .env
 
+There is a few typescript error as im trying to figure out how to fix it. Unfortunately i still can't deploy this app, however you can run it locally
+
 ## How do I deploy this?
 
 Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
