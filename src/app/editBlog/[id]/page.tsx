@@ -5,34 +5,20 @@ import { BiLeftArrow } from "react-icons/bi";
 import EditBlogForm from "~/app/_components/EditBlogForm";
 import { api } from "~/trpc/server";
 
-// const getBlogById = async (id: string) => {
-//   try {
-//     const res = await fetch(`http://localhost:3000/api/blogs/${id}`, {
-//       cache: "no-store",
-//     });
-//     if (!res.ok) {
-//       new Error("Failed to fetch BLogs");
-//     }
-//     return res.json();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-const fetchPost = async (id: string) => {
-  try {
-    const getPostById = await api.blog.getBlogById.query({ id });
-
-    return getPostById;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const page = async ({ params }: any) => {
-  const { id } = params;
-  const blog = await fetchPost(id);
-  const { userId }: { userId: string | null } = auth();
+  const fetchPost = async (id: string) => {
+    try {
+      const getPostById = await api.blog.getBlogById.query({ id });
+      return getPostById;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const { id } = params;
+  const blog: any = await fetchPost(id);
+  const { userId }: { userId: string | null } = auth();
+  const { title, description } = blog;
   if (userId !== blog.userId) {
     return (
       <div className="mx-auto mt-8 max-w-md rounded-lg bg-white p-8 shadow-lg">
@@ -50,7 +36,7 @@ const page = async ({ params }: any) => {
       </div>
     );
   }
-  const { title, description } = blog;
+
   return <EditBlogForm id={id} title={title} description={description} />;
 };
 

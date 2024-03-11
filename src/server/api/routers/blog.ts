@@ -65,25 +65,37 @@ export const blogRouter = createTRPCRouter({
     }),
   deletePost: publicProcedure
     .input(() => {
-      z.object({ _id: z.string() });
+      z.object({
+        _id: z.string(),
+      });
     })
     .mutation(async (opts) => {
-      const { _id } = opts.rawInput.input;
-      const res = await Blog.findByIdAndDelete(_id);
-      console.log(res);
-      if (res) {
-        return {
-          status: "success",
-          message: "post sucessfully deleted",
-        };
+      try {
+        const { _id } = opts.rawInput.input;
+        const res = await Blog.findByIdAndDelete(_id);
+        if (res) {
+          return {
+            status: "success",
+            message: "post sucessfully deleted",
+          };
+        } else {
+          return {
+            status: "error",
+            message: "post not found or failed to delete",
+          };
+        }
+      } catch (error) {
+        console.log(error);
       }
     }),
   updatePost: publicProcedure
-    .input(() =>
+    .input(
       z.object({
-        id: z.string(),
-        newTitle: z.string(),
-        newDescription: z.string(),
+        input: z.object({
+          id: z.string(),
+          newTitle: z.string(),
+          newDescription: z.string(),
+        }),
       }),
     )
     .mutation(async (input) => {

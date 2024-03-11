@@ -45,7 +45,7 @@ const BlogForm = ({ userId, username }: any) => {
     }
   };
 
-  const createPost = trpc.blog.postBlog.useMutation();
+  const createPost: any = trpc.blog.postBlog.useMutation();
 
   return (
     <form className="m-10 flex flex-col gap-4" onSubmit={handleSubmit}>

@@ -30,9 +30,9 @@ const BlogCard = async ({ posts }: any) => {
     <>
       {blogs.length > 0 ? (
         blogs.map((blog: iBlog) => (
-          <div className=" space-y-6 lg:px-2" key={blog._id.toString()}>
-            <div className="w-full rounded-xl border bg-neutral-200 p-4 shadow-md">
-              <div className="flex items-start gap-4">
+          <div className=" space-y-lg:px-2" key={blog._id.toString()}>
+            <div className="flex h-full w-full flex-col justify-between rounded-xl border bg-neutral-200 p-4 shadow-md">
+              <div className="flex items-start  gap-4">
                 {blog.image && (
                   <div className="flex-shrink-0">
                     <Image
